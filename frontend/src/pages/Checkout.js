@@ -1,11 +1,45 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from '../components/navbar';
 
 const Checkout = () => {
     const { cart, clearCart } = useContext(CartContext);
     const [cardDetails, setCardDetails] = useState({ number: '', expiry: '', cvc: '' });
+    const [productosConImagenes, setProductosConImagenes] = useState([]); // Estado para almacenar los productos con imágenes
     const navigate = useNavigate();
+
+    // Obtener imágenes de los productos
+    useEffect(() => {
+        const obtenerImagenesProductos = async () => {
+            try {
+                const productosIds = cart.map(item => item.id);
+                const response = await axios.get('http://127.0.0.1:8000/api/imagenes/');
+                const imagenesPorProducto = {};
+
+                response.data.forEach(imagen => {
+                    if (productosIds.includes(imagen.producto)) {
+                        if (!imagenesPorProducto[imagen.producto]) {
+                            imagenesPorProducto[imagen.producto] = imagen.imagen;
+                        }
+                    }
+                });
+
+                // Asignar las imágenes correspondientes a cada producto en el carrito
+                const productosConImagenesActualizados = cart.map(item => ({
+                    ...item,
+                    imagen: imagenesPorProducto[item.id] || '/placeholder-image.jpg' // Usar imagen por defecto si no se encuentra
+                }));
+                
+                setProductosConImagenes(productosConImagenesActualizados);
+            } catch (error) {
+                console.error('Error al obtener las imágenes de los productos:', error);
+            }
+        };
+
+        obtenerImagenesProductos();
+    }, [cart]);
 
     const getTotal = () => {
         return cart.reduce((total, item) => total + (item.precio * item.cantidad), 0).toFixed(2);
@@ -48,12 +82,14 @@ const Checkout = () => {
     };
 
     return (
+        <div>
+            <Navbar/>
         <div className="container mt-4">
             <h1 className="text-center">Forma de Pago</h1>
             <div className="row">
                 <div className="col-md-8">
                     <h3>Resumen del Pedido</h3>
-                    {cart.map((item, index) => (
+                    {productosConImagenes.map((item, index) => (
                         <div key={index} className="d-flex mb-4">
                             <img src={item.imagen} alt={item.nombre} className="img-thumbnail" style={{ width: '100px', height: '100px' }} />
                             <div className="ms-3">
@@ -107,6 +143,7 @@ const Checkout = () => {
                     <button className="btn btn-primary" onClick={handlePayment}>Realizar Pago</button>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

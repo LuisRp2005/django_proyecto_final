@@ -18,12 +18,13 @@ const Home = () => {
                 </div>
                 <div className="col-md-6">
                   <div className="text-start">
-                    <h1 className="h1 text-success"><b>Zay</b> eCommerce</h1>
-                    <h3 className="h2">Tiny and Perfect eCommerce Template</h3>
+                    <h1 className="h1 text-success"><b>Shapes</b> Shifter</h1>
+                    <h3 className="h2">Encuentra variedad de zapatillas en nuestra tienda virtual</h3>
                     <p>
-                      Zay Shop is an eCommerce HTML5 CSS template with the latest version of Bootstrap 5 (beta 1).
-                      This template is 100% free provided by <a href="https://templatemo.com" target="_blank" rel="noopener noreferrer">TemplateMo</a>.
-                      Image credits go to ...
+                      Explora nuestra amplia selección de zapatillas en línea y descubre el estilo perfecto para ti.
+                      Desde las últimas tendencias hasta los clásicos atemporales, nuestra tienda ofrece opciones 
+                      para cada ocasión y preferencia. Ya sea que busques comodidad para el día a día o un diseño 
+                      único que destaque, nuestra colección está diseñada para satisfacer tus necesidades.
                     </p>
                   </div>
                 </div>
@@ -52,29 +53,32 @@ const Home = () => {
 
         <div className="row">
           <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-4 shadow-sm h-100">
               <img src="zapa1.webp" className="card-img-top" alt="Category 1" />
               <div className="card-body">
-                <h5 className="card-title">Zapatillas Deportivas</h5>
-                <p className="card-text">Descubre el equilibrio perfecto entre estilo y funcionalidad con nuestras zapatillas deportivas. Ideales para quienes buscan comodidad y rendimiento en cada paso, ya sea para correr, entrenar o simplemente para el día a día.</p>
+                <h5 className="card-title mb-3">Zapatillas Deportivas</h5>
+                <p className="card-text">Descubre el equilibrio perfecto entre estilo y funcionalidad con nuestras zapatillas deportivas.</p>
+                <a href="/productos" className="btn btn-primary">Ver más</a>
               </div>
             </div>
           </div>
           <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-4 shadow-sm h-100">
               <img src="zapa2.jpg" className="card-img-top" alt="Category 2" />
               <div className="card-body">
-                <h5 className="card-title">Zapatillas Urbanas</h5>
-                <p className="card-text">Las zapatillas urbanas son perfectas para quienes buscan combinar estilo y comodidad en cada paso. Diseñadas para la vida diaria en la ciudad, nuestras zapatillas urbanas están fabricadas con materiales de primera calidad que aseguran durabilidad y confort.</p>
+                <h5 className="card-title mb-3">Zapatillas Urbanas</h5>
+                <p className="card-text">Combina estilo y comodidad con nuestras zapatillas urbanas diseñadas para la vida diaria.</p>
+                <a href="/productos" className="btn btn-primary">Ver más</a>
               </div>
             </div>
           </div>
           <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-4 shadow-sm h-100">
               <img src="zapa3.jpg" className="card-img-top" alt="Category 3" />
               <div className="card-body">
-                <h5 className="card-title">Zapatillas Casuales</h5>
-                <p className="card-text">Las zapatillas casuales son la opción perfecta para quienes buscan estilo y comodidad en cualquier ocasión. Diseñadas para adaptarse a tu vida diaria, nuestras zapatillas casuales están fabricadas con materiales duraderos que garantizan un ajuste cómodo y resistente.</p>
+                <h5 className="card-title mb-3">Zapatillas Casuales</h5>
+                <p className="card-text">Encuentra estilo y confort con nuestras zapatillas casuales diseñadas para adaptarse a tu vida diaria.</p>
+                <a href="/productos" className="btn btn-primary">Ver más</a>
               </div>
             </div>
           </div>
