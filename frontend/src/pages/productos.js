@@ -24,10 +24,14 @@ const Productos = () => {
                 const url = categoriaSeleccionada ?
                     `http://127.0.0.1:8000/api/productos/?categoria=${categoriaSeleccionada}` :
                     'http://127.0.0.1:8000/api/productos/';
-
+        
+                console.log("URL de la solicitud:", url); // Verificar la URL generada
+        
                 const responseProductos = await axios.get(url);
+                console.log("Productos obtenidos:", responseProductos.data); // Verificar productos obtenidos
+        
                 setProductos(responseProductos.data);
-
+        
                 const productosIds = responseProductos.data.map(producto => producto.id);
                 await fetchImagenes(productosIds);
             } catch (error) {
@@ -35,7 +39,8 @@ const Productos = () => {
                 setError("Hubo un error al obtener los productos. Inténtalo de nuevo más tarde.");
             }
         };
-
+        
+        
         const fetchImagenes = async (productosIds) => {
             try {
                 const responseImagenes = await axios.get('http://127.0.0.1:8000/api/imagenes/');
@@ -66,7 +71,7 @@ const Productos = () => {
 
         fetchProductos();
         fetchCategorias();
-    }, [categoriaSeleccionada]);
+    }, [categoriaSeleccionada]); // useEffect se ejecutará cada vez que cambie 'categoriaSeleccionada'
 
     const handleImageError = (e) => {
         e.target.src = '/placeholder-image.jpg';
@@ -81,7 +86,7 @@ const Productos = () => {
     };
 
     const filtrarPorCategoria = (categoriaId) => {
-        setCategoriaSeleccionada(categoriaId);
+        setCategoriaSeleccionada(categoriaId); // Función para actualizar la categoría seleccionada
     };
 
     const handleAddToCart = (producto) => {
@@ -96,7 +101,7 @@ const Productos = () => {
 
             <div className="container mt-4">
                 <div className="row">
-                    <CategoriasColumn categorias={categorias} onCategoriaClick={filtrarPorCategoria} />
+                    <CategoriasColumn categorias={categorias} onCategoriaClick={filtrarPorCategoria} /> {/* Pasamos la función de filtrado */}
 
                     <div className="col-md-9">
                         <div className="productos">
@@ -115,7 +120,7 @@ const Productos = () => {
                                         <div className="card h-100">
                                             {imagenes[producto.id] && imagenes[producto.id].length > 0 ? (
                                                 <img
-                                                    src={imagenes[producto.id][0].imagen}
+                                                    src={imagenes[producto.id][0].imagen} // Ajusta la fuente de la imagen según tus datos
                                                     className="card-img-top h-100"
                                                     alt={producto.nombre}
                                                     onError={handleImageError}
