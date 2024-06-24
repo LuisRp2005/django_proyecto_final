@@ -26,56 +26,79 @@ const Registro = () => {
     return (
         <div className="container mt-4">
             <h2>Registro de Usuario</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="nombre" className="form-label">Nombre</label>
+            <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit}>
+                <div className="col-md-6">
+                    <label htmlFor="validationCustom01" className="form-label">Nombre</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="nombre"
+                        id="validationCustom01"
                         name="nombre"
                         value={formData.nombre}
                         onChange={handleChange}
                         required
                     />
+                    <div className="valid-feedback">Looks good!</div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="apellidos" className="form-label">Apellidos</label>
+                <div className="col-md-6">
+                    <label htmlFor="validationCustom02" className="form-label">Apellidos</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="apellidos"
+                        id="validationCustom02"
                         name="apellidos"
                         value={formData.apellidos}
                         onChange={handleChange}
                         required
                     />
+                    <div className="valid-feedback">Looks good!</div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="gmail" className="form-label">Email</label>
+                <div className="col-md-6">
+                    <label htmlFor="validationCustom03" className="form-label">Email</label>
                     <input
                         type="email"
                         className="form-control"
-                        id="gmail"
+                        id="validationCustom03"
                         name="gmail"
                         value={formData.gmail}
                         onChange={handleChange}
                         required
                     />
+                    <div className="invalid-feedback">Please provide a valid email.</div>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="contrasena" className="form-label">Contraseña</label>
+                <div className="col-md-6">
+                    <label htmlFor="validationCustom04" className="form-label">Contraseña</label>
                     <input
                         type="password"
                         className="form-control"
-                        id="contrasena"
+                        id="validationCustom04"
                         name="contrasena"
                         value={formData.contrasena}
                         onChange={handleChange}
                         required
                     />
+                    <div className="invalid-feedback">Please provide a valid password.</div>
                 </div>
-                <button type="submit" className="btn btn-primary">Registrar</button>
+                <div className="col-12">
+                    <div className="form-check">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="invalidCheck"
+                            required
+                        />
+                        <label className="form-check-label" htmlFor="invalidCheck">
+                            Agree to terms and conditions
+                        </label>
+                        <div className="invalid-feedback">
+                            You must agree before submitting.
+                        </div>
+                    </div>
+                </div>
+                <div className="col-12">
+                    <button className="btn btn-primary" type="submit">Registrar</button>
+                </div>
             </form>
             <p className="mt-3">¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link></p>
         </div>

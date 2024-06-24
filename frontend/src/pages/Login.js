@@ -19,10 +19,10 @@ const LoginAdmin = () => {
 
         try {
             const response = await axios.get('http://127.0.0.1:8000/api/usuarios/');
-            console.log('API Response:', response.data);  // Mensaje de depuración para verificar la respuesta de la API
+            console.log('API Response:', response.data);
 
             const usuario = response.data.find(user => user.gmail === email && user.contrasena === password);
-            console.log('Usuario encontrado:', usuario);  // Mensaje de depuración para verificar el usuario encontrado
+            console.log('Usuario encontrado:', usuario);
 
             if (usuario) {
                 setAlert({ type: 'success', message: 'Inicio de sesión exitoso' });
@@ -31,13 +31,15 @@ const LoginAdmin = () => {
                     navigate('/productos');
                 }, 2000);
             } else {
-                setAlert({ type: 'danger', message: 'Usuario no autorizado' });
-                setTimeout(() => setAlert({ type: '', message: '' }), 4000);
+                setAlert({ type: 'danger', message: 'Usuario no autorizado. Redirigiendo al registro...' });
+                setTimeout(() => {
+                    navigate('/registro'); 
+                }, 1000);
             }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             setAlert({ type: 'danger', message: 'Error al iniciar sesión. Verifique sus credenciales.' });
-            setTimeout(() => setAlert({ type: '', message: '' }), 4000);
+            setTimeout(() => setAlert({ type: '', message: '' }), 1000);
         }
     };
 
