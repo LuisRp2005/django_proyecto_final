@@ -23,7 +23,7 @@ const Navbar = () => {
                 <div className="container-fluid">
                     <Link to="/home" className="navbar-brand px-lg-4">
                         <h1 className="m-0 display-4">
-                            Zapateria
+                            ShapesShifter
                         </h1>
                     </Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

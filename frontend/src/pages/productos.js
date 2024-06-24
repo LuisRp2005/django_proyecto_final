@@ -137,7 +137,7 @@ const Productos = () => {
                                             )}
                                             <div className="card-body">
                                                 <h5 className="card-title">{producto.nombre}</h5>
-                                                <p className="card-text">${producto.precio}</p>
+                                                <p className="card-text">s/.{producto.precio}</p>
                                                 <button className="btn btn-primary btn-sm" onClick={() => openModal(producto)}>Ver más</button>
                                                 <button className="btn btn-success btn-sm mx-2" onClick={() => handleAddToCart(producto)}>Añadir Producto <FontAwesomeIcon icon={faShoppingCart} /></button>
                                             </div>
