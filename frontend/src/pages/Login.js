@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './LoginAdmin.css';  // Importamos el CSS personalizado
 
 const LoginAdmin = () => {
     const navigate = useNavigate();
@@ -42,44 +43,53 @@ const LoginAdmin = () => {
     };
 
     return (
-        <div className="container h-screen flex justify-center items-center bg-gray-100">
-            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-center mb-6">Inicio de Sesión</h2>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="email" className="block text-gray-700">Correo Electrónico:</label>
-                        <input
-                            type="email"
-                            className="form-input mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+        <div className="login-background">
+            <div className="login-container">
+                <div className="login-box">
+                    <div className="avatar">
+                        <img src="https://i.pinimg.com/564x/07/89/d4/0789d494070409561d6167401bb06a83.jpg" alt="Logo" />  {/* Asegúrate de poner la ruta correcta de tu logo */}
                     </div>
-                    <div>
-                        <label htmlFor="password" className="block text-gray-700">Contraseña:</label>
-                        <input
-                            type="password"
-                            className="form-input mt-1 block w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                    <h2 className="login-title">Log In</h2>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <div className="login-field">
+                            <label htmlFor="email" className="login-label">Username</label>
+                            <input
+                                type="email"
+                                className="login-input"
+                                id="email"
+                                placeholder="Username"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="login-field">
+                            <label htmlFor="password" className="login-label">Password</label>
+                            <input
+                                type="password"
+                                className="login-input"
+                                id="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="login-remember-me">
+                            <input type="checkbox" id="rememberMe" />
+                            <label htmlFor="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" className="login-button">Login</button>
+                    </form>
+                    <div className="login-forgot-password">
+                        <a href="/forgot-password">Forgot Password?</a>
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Iniciar Sesión
-                    </button>
-                </form>
-                {alert.message && (
-                    <div className={`mt-4 p-4 text-sm text-white bg-${alert.type === 'danger' ? 'red' : 'green'}-500 rounded-lg`}>
-                        {alert.message}
-                    </div>
-                )}
+                    {alert.message && (
+                        <div className={`login-alert login-alert-${alert.type}`}>
+                            {alert.message}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -12,20 +12,38 @@ const Checkout = () => {
     };
 
     const handleCardChange = (e) => {
-        setCardDetails({
-            ...cardDetails,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        
+        if (name === 'number' && value.length <= 16 && /^\d*$/.test(value)) {
+            setCardDetails({
+                ...cardDetails,
+                [name]: value
+            });
+        } else if (name === 'expiry' && value.length <= 5) {
+            if (/^\d{0,2}\/?\d{0,2}$/.test(value)) {
+                setCardDetails({
+                    ...cardDetails,
+                    [name]: value
+                });
+            }
+        } else if (name === 'cvc' && value.length <= 3 && /^\d*$/.test(value)) {
+            setCardDetails({
+                ...cardDetails,
+                [name]: value
+            });
+        }
     };
 
     const handlePayment = () => {
         const { number, expiry, cvc } = cardDetails;
-        if (number && expiry && cvc) {
+        const expiryPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        
+        if (number.length === 16 && expiryPattern.test(expiry) && cvc.length === 3) {
             alert('¡Pago realizado con éxito!');
             clearCart();
             navigate('/productos'); 
         } else {
-            alert('Por favor, complete todos los campos de la tarjeta');
+            alert('Por favor, complete todos los campos de la tarjeta correctamente');
         }
     };
 
@@ -52,15 +70,39 @@ const Checkout = () => {
                     <h3>Detalles del Pago con tarjeta </h3>
                     <div className="mb-3">
                         <label htmlFor="cardNumber" className="form-label">Número de Tarjeta</label>
-                        <input type="number" className="form-control" id="cardNumber" name="number" value={cardDetails.number} onChange={handleCardChange} />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="cardNumber"
+                            name="number"
+                            value={cardDetails.number}
+                            onChange={handleCardChange}
+                            maxLength="16"
+                        />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="cardExpiry" className="form-label">Fecha de Vencimiento</label>
-                        <input type="number" className="form-control" id="cardExpiry" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} />
+                        <label htmlFor="cardExpiry" className="form-label">Fecha de Vencimiento (MM/YY)</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="cardExpiry"
+                            name="expiry"
+                            value={cardDetails.expiry}
+                            onChange={handleCardChange}
+                            placeholder="MM/YY"
+                        />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="cardCvc" className="form-label">CVC</label>
-                        <input type="number" className="form-control" id="cardCvc" name="cvc" value={cardDetails.cvc} onChange={handleCardChange} />
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="cardCvc"
+                            name="cvc"
+                            value={cardDetails.cvc}
+                            onChange={handleCardChange}
+                            maxLength="3"
+                        />
                     </div>
                     <button className="btn btn-primary" onClick={handlePayment}>Realizar Pago</button>
                 </div>
