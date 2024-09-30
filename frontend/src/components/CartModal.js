@@ -6,16 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const CartModal = ({ show, onClose }) => {
+    // Obtener funciones y estado del contexto del carrito
     const { cart, updateCartItem, removeFromCart } = useContext(CartContext);
-    const navigate = useNavigate();
-    const [imagenes, setImagenes] = useState({});
+    const navigate = useNavigate(); // Hook para navegar a otras rutas
+    const [imagenes, setImagenes] = useState({}); // Estado para almacenar las imágenes de los productos
 
+    // useEffect para obtener las imágenes de los productos en el carrito
     useEffect(() => {
         const fetchImagenes = async () => {
             try {
+                // Obtener las imágenes desde el servidor
                 const responseImagenes = await axios.get('http://127.0.0.1:8000/api/imagenes/');
                 const imagenesPorProducto = {};
                 responseImagenes.data.forEach(imagen => {
+                    // Asignar las imágenes a sus respectivos productos en el carrito
                     if (cart.find(item => item.id === imagen.producto)) {
                         if (!imagenesPorProducto[imagen.producto]) {
                             imagenesPorProducto[imagen.producto] = [];
@@ -23,34 +27,38 @@ const CartModal = ({ show, onClose }) => {
                         imagenesPorProducto[imagen.producto].push(imagen);
                     }
                 });
-                setImagenes(imagenesPorProducto);
+                setImagenes(imagenesPorProducto); // Actualizar el estado de las imágenes
             } catch (error) {
                 console.error("Hubo un error al obtener las imágenes:", error);
             }
         };
 
-        fetchImagenes();
-    }, [cart]);
+        fetchImagenes(); // Llamar a la función para obtener las imágenes
+    }, [cart]); // Ejecutar el efecto cada vez que cambia el carrito
 
     if (!show) {
-        return null;
+        return null; // Si el modal no debe mostrarse, retornar null
     }
 
+    // Manejar la eliminación de un producto del carrito
     const handleRemoveFromCart = (producto) => {
         removeFromCart(producto);
     };
 
+    // Calcular el total del carrito
     const getTotal = () => {
         return cart.reduce((total, item) => total + (item.precio * item.cantidad), 0).toFixed(2);
     };
 
+    // Manejar la navegación a la página de checkout
     const handleProceedToCheckout = () => {
         onClose(); // Cierra el modal
         navigate('/checkout'); // Navega a la página de checkout
     };
 
+    // Manejar el error de carga de imágenes
     const handleImageError = (e) => {
-        e.target.src = '/placeholder-image.jpg'; // Ruta a tu imagen de placeholder
+        e.target.src = '/placeholder-image.jpg'; // Ruta a la imagen de placeholder
     };
 
     return (
