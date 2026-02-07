@@ -84,44 +84,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-dark text-light" id="template-footer">
-        <div className="container py-4">
-          <div className="row">
-            <div className="col-md-3 col-sm-6">
-              <h5>Quick Links</h5>
-              <ul className="list-unstyled">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <h5>Support</h5>
-              <ul className="list-unstyled">
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Use</a></li>
-              </ul>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <h5>Social</h5>
-              <ul className="list-unstyled">
-                <li><a href="#">Twitter</a></li>
-                <li><a href="#">Facebook</a></li>
-                <li><a href="#">Instagram</a></li>
-              </ul>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <h5>Contact Us</h5>
-              <address>
-                <a href="mailto:info@example.com">info@example.com</a><br />
-                <a href="tel:+123456789">+1 (234) 567-89</a>
-              </address>
-            </div>
-          </div>
-        </div>
         <div className="w-100 bg-black py-3">
           <div className="container">
             <div className="row pt-2">
@@ -133,8 +95,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </footer>
     </div>
+
   );
 };
 

@@ -1,92 +1,91 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Navbar from '../components/navbar';
-import '../pages/styles.css';
-import CategoriasColumn from '../components/categoria'; // Ajustado el nombre del componente
-import ProductoModal from '../components/modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
+import Navbar from '../components/navbar';
+import CategoriasColumn from '../components/categoria';
+import ProductoModal from '../components/modal';
 import { CartContext } from '../context/CartContext';
+import '../pages/styles.css';
 
 const Productos = () => {
     const { addToCart } = useContext(CartContext);
+
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
-    const [error, setError] = useState(null);
     const [imagenes, setImagenes] = useState({});
     const [modalProducto, setModalProducto] = useState(null);
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null); // Estado para la categoría seleccionada
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+    const [error, setError] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
 
-    useEffect(() => {
-        const fetchProductos = async () => {
-            try {
-                const url = categoriaSeleccionada ?
-                    `http://127.0.0.1:8000/api/productos/?categoria=${categoriaSeleccionada}` :
-                    'http://127.0.0.1:8000/api/productos/';
-        
-                console.log("URL de la solicitud:", url); // Verificar la URL generada
-        
-                const responseProductos = await axios.get(url);
-                console.log("Productos obtenidos:", responseProductos.data); // Verificar productos obtenidos
-        
-                setProductos(responseProductos.data);
-        
-                const productosIds = responseProductos.data.map(producto => producto.id);
-                await fetchImagenes(productosIds);
-            } catch (error) {
-                console.error("Hubo un error al obtener los productos:", error);
-                setError("Hubo un error al obtener los productos. Inténtalo de nuevo más tarde.");
-            }
-        };
-        
-        
-        const fetchImagenes = async (productosIds) => {
-            try {
-                const responseImagenes = await axios.get('http://127.0.0.1:8000/api/imagenes/');
-                const imagenesPorProducto = {};
-                responseImagenes.data.forEach(imagen => {
-                    if (productosIds.includes(imagen.producto)) {
-                        if (!imagenesPorProducto[imagen.producto]) {
-                            imagenesPorProducto[imagen.producto] = [];
-                        }
-                        imagenesPorProducto[imagen.producto].push(imagen);
+    // Obtener imágenes
+    const fetchImagenes = async (productosIds) => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/imagenes/');
+            const imagenesPorProducto = {};
+
+            response.data.forEach(imagen => {
+                if (productosIds.includes(imagen.producto)) {
+                    if (!imagenesPorProducto[imagen.producto]) {
+                        imagenesPorProducto[imagen.producto] = [];
                     }
-                });
-                setImagenes(imagenesPorProducto);
-            } catch (error) {
-                console.error("Hubo un error al obtener las imágenes:", error);
-            }
-        };
+                    imagenesPorProducto[imagen.producto].push(imagen);
+                }
+            });
 
-        const fetchCategorias = async () => {
-            try {
-                const responseCategorias = await axios.get('http://127.0.0.1:8000/api/categorias/');
-                setCategorias(responseCategorias.data);
-            } catch (error) {
-                console.error("Hubo un error al obtener las categorías:", error);
-                setError("Hubo un error al obtener las categorías. Inténtalo de nuevo más tarde.");
-            }
-        };
+            setImagenes(imagenesPorProducto);
+        } catch (err) {
+            console.error("Error al obtener imágenes:", err);
+        }
+    };
 
+    // Obtener productos
+    const fetchProductos = async () => {
+        try {
+            setError(null);
+            const url = categoriaSeleccionada
+                ? `http://127.0.0.1:8000/api/productos/?categoria=${categoriaSeleccionada}`
+                : 'http://127.0.0.1:8000/api/productos/';
+
+            const response = await axios.get(url);
+            setProductos(response.data);
+
+            const productosIds = response.data.map(p => p.id);
+            await fetchImagenes(productosIds);
+        } catch (err) {
+            console.error("Error al obtener productos:", err);
+            setError("No se pudieron obtener los productos. Inténtalo más tarde.");
+        }
+    };
+
+    // Obtener categorías
+    const fetchCategorias = async () => {
+        try {
+            setError(null);
+            const response = await axios.get('http://127.0.0.1:8000/api/categorias/');
+            setCategorias(response.data);
+        } catch (err) {
+            console.error("Error al obtener categorías:", err);
+            setError("No se pudieron obtener las categorías.");
+        }
+    };
+
+    useEffect(() => {
         fetchProductos();
         fetchCategorias();
-    }, [categoriaSeleccionada]); // useEffect se ejecutará cada vez que cambie 'categoriaSeleccionada'
+    }, [categoriaSeleccionada]);
 
     const handleImageError = (e) => {
         e.target.src = '/placeholder-image.jpg';
     };
 
-    const openModal = (producto) => {
-        setModalProducto(producto);
-    };
-
-    const closeModal = () => {
-        setModalProducto(null);
-    };
+    const openModal = (producto) => setModalProducto(producto);
+    const closeModal = () => setModalProducto(null);
 
     const filtrarPorCategoria = (categoriaId) => {
-        setCategoriaSeleccionada(categoriaId); // Función para actualizar la categoría seleccionada
+        setCategoriaSeleccionada(categoriaId);
     };
 
     const handleAddToCart = (producto) => {
@@ -101,50 +100,62 @@ const Productos = () => {
 
             <div className="container mt-4">
                 <div className="row">
-                    <CategoriasColumn categorias={categorias} onCategoriaClick={filtrarPorCategoria} /> {/* Pasamos la función de filtrado */}
+                    <CategoriasColumn
+                        categorias={categorias}
+                        onCategoriaClick={filtrarPorCategoria}
+                    />
 
                     <div className="col-md-9">
-                        <div className="productos">
-                            <h1 className="text-4xl text-center font-bold text-blue-600">Descubre Nuestros Productos</h1>
+                        <h1 className="text-4xl text-center font-bold text-blue-600 mb-4">
+                            Descubre Nuestros Productos
+                        </h1>
 
-                            {error && <p className="error-message">{error}</p>}
-                            {showAlert && (
-                                <div className="alert alert-success alert-dismissible fade show" role="alert">
-                                    Añadido al carrito correctamente.
-                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            )}
-                            <div className="row mt-5">
-                                {productos.map(producto => (
-                                    <div key={producto.id} className="col-md-4 mb-4">
-                                        <div className="card h-100">
-                                            {imagenes[producto.id] && imagenes[producto.id].length > 0 ? (
-                                                <img
-                                                    src={imagenes[producto.id][0].imagen} // Ajusta la fuente de la imagen según tus datos
-                                                    className="card-img-top h-100"
-                                                    alt={producto.nombre}
-                                                    onError={handleImageError}
-                                                />
-                                            ) : (
-                                                <div className="d-flex justify-content-center align-items-center">
-                                                    <img
-                                                        src="/placeholder-image.jpg"
-                                                        className="card-img-top h-100"
-                                                        alt={producto.nombre}
-                                                        onError={handleImageError}
-                                                    />
-                                                </div>
-                                            )}
-                                            <div className="card-body">
-                                                <h5 className="card-title">{producto.nombre}</h5>
-                                                <p className="card-text">s/.{producto.precio}</p>
-                                                <button className="btn btn-primary btn-sm" onClick={() => openModal(producto)}>Ver más</button>
-                                                <button className="btn btn-success btn-sm mx-2" onClick={() => handleAddToCart(producto)}>Añadir Producto <FontAwesomeIcon icon={faShoppingCart} /></button>
-                                            </div>
+                        {error && <p className="error-message">{error}</p>}
+
+                        {showAlert && (
+                            <div className="alert alert-success alert-dismissible fade show" role="alert">
+                                Añadido al carrito correctamente.
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                        )}
+
+                        <div className="row mt-4">
+                            {productos.map(producto => (
+                                <div key={producto.id} className="col-md-4 mb-4">
+                                    <div className="card h-100">
+                                        <img
+                                            src={
+                                                imagenes[producto.id]?.[0]?.imagen ||
+                                                '/placeholder-image.jpg'
+                                            }
+                                            className="card-img-top h-100"
+                                            alt={producto.nombre}
+                                            onError={handleImageError}
+                                        />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{producto.nombre}</h5>
+                                            <p className="card-text">s/. {producto.precio}</p>
+                                            <button
+                                                className="btn btn-primary btn-sm"
+                                                onClick={() => openModal(producto)}
+                                            >
+                                                Ver más
+                                            </button>
+                                            <button
+                                                className="btn btn-success btn-sm mx-2"
+                                                onClick={() => handleAddToCart(producto)}
+                                            >
+                                                Añadir Producto <FontAwesomeIcon icon={faShoppingCart} />
+                                            </button>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

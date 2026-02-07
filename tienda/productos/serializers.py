@@ -1,24 +1,22 @@
-from rest_framework import serializers # type: ignore
-from .models import Categoria, Usuario, Producto, Imagen
+from rest_framework import serializers
+from .models import Marca, Categoria, Reloj, ImagenReloj
+
+class MarcaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Marca
+        fields = '__all__'
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
         fields = '__all__'
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class RelojSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
+        model = Reloj
         fields = '__all__'
 
-
-
-class ProductoSerializer(serializers.ModelSerializer):
+class ImagenRelojSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Producto
-        fields = '__all__'
-
-class ImagenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Imagen
+        model = ImagenReloj
         fields = '__all__'
